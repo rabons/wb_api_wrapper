@@ -73,14 +73,14 @@ def lrv_or_mrv(data,least_or_most,include_year=False):
             data = data.unstack()
     except IndexError :
         pass #data is already a series;
-        
+       
     #removes nans, and takes the least or most recent value. hop has a horrible shape
     hop=data.reset_index().dropna().groupby("country").apply(mlrv_gp,least_or_most,include_year)
     
     if include_year:
         return pd.DataFrame(hop.tolist(), columns=['value',"year"], index=hop.index)
     else:    
-        return hop.reset_index().set_index("country")[0]
+        return hop.reset_index().set_index("country")[data.columns[0]]
     
 def mr_year(data):    
     """year of most recent values from a dataframe. assumes one column is called 'year'
